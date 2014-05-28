@@ -19,6 +19,8 @@
 		EA011A21193610B100232E92 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA011A09193610B100232E92 /* UIKit.framework */; };
 		EA011A29193610B100232E92 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EA011A27193610B100232E92 /* InfoPlist.strings */; };
 		EA011A2B193610B100232E92 /* CDYImagesRetrieveTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA011A2A193610B100232E92 /* CDYImagesRetrieveTests.m */; };
+		EA011A37193612F700232E92 /* CDYImagesRetrieve.m in Sources */ = {isa = PBXBuildFile; fileRef = EA011A36193612F700232E92 /* CDYImagesRetrieve.m */; };
+		EA011A3A1936130900232E92 /* CDYImageAsk.m in Sources */ = {isa = PBXBuildFile; fileRef = EA011A391936130900232E92 /* CDYImageAsk.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,10 @@
 		EA011A26193610B100232E92 /* CDYImagesRetrieveTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CDYImagesRetrieveTests-Info.plist"; sourceTree = "<group>"; };
 		EA011A28193610B100232E92 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EA011A2A193610B100232E92 /* CDYImagesRetrieveTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CDYImagesRetrieveTests.m; sourceTree = "<group>"; };
+		EA011A35193612F700232E92 /* CDYImagesRetrieve.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDYImagesRetrieve.h; sourceTree = "<group>"; };
+		EA011A36193612F700232E92 /* CDYImagesRetrieve.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDYImagesRetrieve.m; sourceTree = "<group>"; };
+		EA011A381936130900232E92 /* CDYImageAsk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDYImageAsk.h; sourceTree = "<group>"; };
+		EA011A391936130900232E92 /* CDYImageAsk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDYImageAsk.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +83,7 @@
 		EA0119F9193610B100232E92 = {
 			isa = PBXGroup;
 			children = (
+				EA011A34193612E900232E92 /* Core */,
 				EA011A0B193610B100232E92 /* CDYImagesRetrieve */,
 				EA011A24193610B100232E92 /* CDYImagesRetrieveTests */,
 				EA011A04193610B100232E92 /* Frameworks */,
@@ -142,6 +149,17 @@
 				EA011A27193610B100232E92 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EA011A34193612E900232E92 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				EA011A381936130900232E92 /* CDYImageAsk.h */,
+				EA011A391936130900232E92 /* CDYImageAsk.m */,
+				EA011A35193612F700232E92 /* CDYImagesRetrieve.h */,
+				EA011A36193612F700232E92 /* CDYImagesRetrieve.m */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -240,6 +258,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA011A16193610B100232E92 /* AppDelegate.m in Sources */,
+				EA011A37193612F700232E92 /* CDYImagesRetrieve.m in Sources */,
+				EA011A3A1936130900232E92 /* CDYImageAsk.m in Sources */,
 				EA011A12193610B100232E92 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
