@@ -1,5 +1,5 @@
 Pod::Spec.new do |spec|
-  spec.name         = 'CDYAdLoader'
+  spec.name         = 'CDYImagesRetrieve'
   spec.version      = '0.1.0'
   spec.summary      = "Base code for images async retrieve and caching"
   spec.homepage     = "https://github.com/coodly/CDYImagesRetrieve"
@@ -11,5 +11,6 @@ Pod::Spec.new do |spec|
   spec.subspec 'Core' do |ss|
     ss.platform = :ios, '7.0'
     ss.source_files = 'Core/*.{h,m}'
+    ss.dependency 'AFNetworking'
   end
 end

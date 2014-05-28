@@ -14,13 +14,4 @@
  * limitations under the License.
  */
 
-#import <Foundation/Foundation.h>
-#import <CDYImagesRetrieve/CDYImagesRetrieve.h>
-
-@interface CDYImageAsk : NSObject
-
-@property (nonatomic, assign) CGSize resultSize;
-@property (nonatomic, strong) NSURL *imageURL;
-@property (nonatomic, copy) CDYImageRetrieveBlock completion;
-
-@end
+#import "CDYImagesRetrieveConstants.h"

@@ -21,6 +21,7 @@
 		EA011A2B193610B100232E92 /* CDYImagesRetrieveTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA011A2A193610B100232E92 /* CDYImagesRetrieveTests.m */; };
 		EA011A37193612F700232E92 /* CDYImagesRetrieve.m in Sources */ = {isa = PBXBuildFile; fileRef = EA011A36193612F700232E92 /* CDYImagesRetrieve.m */; };
 		EA011A3A1936130900232E92 /* CDYImageAsk.m in Sources */ = {isa = PBXBuildFile; fileRef = EA011A391936130900232E92 /* CDYImageAsk.m */; };
+		EA011A431936717A00232E92 /* CDYImagesRetrieveConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EA011A421936717A00232E92 /* CDYImagesRetrieveConstants.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,9 @@
 		EA011A36193612F700232E92 /* CDYImagesRetrieve.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDYImagesRetrieve.m; sourceTree = "<group>"; };
 		EA011A381936130900232E92 /* CDYImageAsk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDYImageAsk.h; sourceTree = "<group>"; };
 		EA011A391936130900232E92 /* CDYImageAsk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDYImageAsk.m; sourceTree = "<group>"; };
+		EA011A411936717A00232E92 /* CDYImagesRetrieveConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDYImagesRetrieveConstants.h; sourceTree = "<group>"; };
+		EA011A421936717A00232E92 /* CDYImagesRetrieveConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDYImagesRetrieveConstants.m; sourceTree = "<group>"; };
+		EA011A44193672BD00232E92 /* CDYImagesRetrieve.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CDYImagesRetrieve.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +87,7 @@
 		EA0119F9193610B100232E92 = {
 			isa = PBXGroup;
 			children = (
+				EA011A44193672BD00232E92 /* CDYImagesRetrieve.podspec */,
 				EA011A34193612E900232E92 /* Core */,
 				EA011A0B193610B100232E92 /* CDYImagesRetrieve */,
 				EA011A24193610B100232E92 /* CDYImagesRetrieveTests */,
@@ -158,6 +163,8 @@
 				EA011A391936130900232E92 /* CDYImageAsk.m */,
 				EA011A35193612F700232E92 /* CDYImagesRetrieve.h */,
 				EA011A36193612F700232E92 /* CDYImagesRetrieve.m */,
+				EA011A411936717A00232E92 /* CDYImagesRetrieveConstants.h */,
+				EA011A421936717A00232E92 /* CDYImagesRetrieveConstants.m */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -261,6 +268,7 @@
 				EA011A37193612F700232E92 /* CDYImagesRetrieve.m in Sources */,
 				EA011A3A1936130900232E92 /* CDYImageAsk.m in Sources */,
 				EA011A12193610B100232E92 /* main.m in Sources */,
+				EA011A431936717A00232E92 /* CDYImagesRetrieveConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

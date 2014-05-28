@@ -16,6 +16,15 @@
 
 #import <Foundation/Foundation.h>
 
+@class CDYImageAsk;
+
+typedef void (^CDYImageRetrieveBlock)(CDYImageAsk *forAsk, UIImage *image);
+
 @interface CDYImagesRetrieve : NSObject
+
+- (id)initWithName:(NSString *)name;
+- (BOOL)hasImageForAsk:(CDYImageAsk *)ask;
+- (UIImage *)imageForAsk:(CDYImageAsk *)ask;
+- (void)retrieveImageForAsk:(CDYImageAsk *)ask completion:(CDYImageRetrieveBlock)completion;
 
 @end

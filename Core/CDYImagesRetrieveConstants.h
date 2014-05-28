@@ -15,12 +15,17 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <CDYImagesRetrieve/CDYImagesRetrieve.h>
 
-@interface CDYImageAsk : NSObject
+#ifndef CDY_ENABLE_IMAGES_RETRIEVE_LOGGING
+    #ifdef DEBUG
+        #define CDY_ENABLE_IMAGES_RETRIEVE_LOGGING 1
+    #else
+        #define CDY_ENABLE_IMAGES_RETRIEVE_LOGGING 0
+    #endif
+#endif
 
-@property (nonatomic, assign) CGSize resultSize;
-@property (nonatomic, strong) NSURL *imageURL;
-@property (nonatomic, copy) CDYImageRetrieveBlock completion;
-
-@end
+#if CDY_ENABLE_IMAGES_RETRIEVE_LOGGING
+    #define CDYIRLog(s, ...) NSLog( @"<%@:%@ (%d)> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], NSStringFromSelector(_cmd), __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
+#else
+    #define CDYIRLog(s, ...) //
+#endif
