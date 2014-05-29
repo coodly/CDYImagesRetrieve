@@ -18,4 +18,14 @@
 
 @implementation CDYImageAsk
 
+- (id)init {
+    self = [super init];
+    if (self) {
+        [self setImageMode:UIViewContentModeScaleAspectFill];
+    }
+
+    return self;
+}
+
+
 @end

@@ -467,6 +467,7 @@
 				EA011A30193610B100232E92 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EA011A31193610B100232E92 /* Build configuration list for PBXNativeTarget "CDYImagesRetrieveTests" */ = {
 			isa = XCConfigurationList;
@@ -475,6 +476,7 @@
 				EA011A33193610B100232E92 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

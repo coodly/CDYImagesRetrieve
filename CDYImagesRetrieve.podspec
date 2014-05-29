@@ -12,5 +12,6 @@ Pod::Spec.new do |spec|
     ss.platform = :ios, '7.0'
     ss.source_files = 'Core/*.{h,m}'
     ss.dependency 'AFNetworking'
+    ss.dependency 'CDYImageScale', :git => 'https://github.com/coodly/CDYImageScale.git'
   end
 end

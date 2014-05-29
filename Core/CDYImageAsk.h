@@ -22,5 +22,6 @@
 @property (nonatomic, assign) CGSize resultSize;
 @property (nonatomic, strong) NSURL *imageURL;
 @property (nonatomic, copy) CDYImageRetrieveBlock completion;
+@property (nonatomic, assign) UIViewContentMode imageMode;
 
 @end

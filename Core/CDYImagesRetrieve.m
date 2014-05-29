@@ -18,6 +18,7 @@
 #import "CDYImagesRetrieve.h"
 #import "CDYImagesRetrieveConstants.h"
 #import "AFHTTPRequestOperationManager.h"
+#import "UIImage+CDYImageScale.h"
 
 @interface CDYImagesRetrieve ()
 
@@ -69,6 +70,10 @@
 
 - (void)retrieveImageForAsk:(CDYImageAsk *)ask completion:(CDYImageRetrieveBlock)completion {
     dispatch_async([self retrieveQueue], ^{
+        if (!ask) {
+            return;
+        }
+
         if ([self.processedAsk isEqual:ask]) {
             CDYIRLog(@"Ask already processed");
             return;
@@ -97,35 +102,80 @@
         [self setProcessedAsk:ask];
         [self.asksQueue removeObject:ask];
 
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        [manager.operationQueue setMaxConcurrentOperationCount:1];
-        [manager setResponseSerializer:[AFImageResponseSerializer serializer]];
-        CDYIRLog(@"Pull image from %@", ask.imageURL);
-        [manager GET:ask.imageURL.absoluteString parameters:@"" success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            dispatch_async([self retrieveQueue], ^{
-                CDYIRLog(@"Success");
-                ask.completion(ask, responseObject);
-                [self setProcessedAsk:nil];
-                [self processNextAsk];
-            });
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            dispatch_async([self retrieveQueue], ^{
-                CDYIRLog(@"Error:%@", error);
-                [self setProcessedAsk:nil];
-                [self processNextAsk];
-            });
-        }];
+        if ([self haveOriginalDataForAsk:ask]) {
+            [self localProcessForAsk:ask];
+        } else {
+            [self retrieveDataForAsk:ask];
+        }
     });
 }
 
+- (void)localProcessForAsk:(CDYImageAsk *)ask {
+    CDYIRLog(@"localProcessForAsk");
+    NSString *originalDataPath = [self cachePathForAsk:ask withSize:NO];
+    NSData *data = [NSData dataWithContentsOfFile:originalDataPath];
+    UIImage *original = [[UIImage alloc] initWithData:data];
+    UIImage *atAskSize = [original scaleTo:ask.resultSize mode:ask.imageMode];
+
+    NSString *askDataPath = [self cachePathForAsk:ask];
+    NSData *askData = UIImageJPEGRepresentation(atAskSize, 0.8);
+    [askData writeToFile:askDataPath atomically:YES];
+    ask.completion(ask, atAskSize);
+    [self setProcessedAsk:nil];
+    [self processNextAsk];
+}
+
+- (BOOL)haveOriginalDataForAsk:(CDYImageAsk *)ask {
+    NSString *originalCachePath = [self cachePathForAsk:ask withSize:NO];
+    return [[NSFileManager defaultManager] fileExistsAtPath:originalCachePath];
+}
+
+- (void)retrieveDataForAsk:(CDYImageAsk *)ask {
+    CDYIRLog(@"retrieveDataForAsk");
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager.operationQueue setMaxConcurrentOperationCount:1];
+    [manager setResponseSerializer:[AFHTTPResponseSerializer serializer]];
+    CDYIRLog(@"Pull image from %@", ask.imageURL);
+    [manager GET:ask.imageURL.absoluteString parameters:@"" success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        dispatch_async([self retrieveQueue], ^{
+            CDYIRLog(@"Success");
+            [self cacheData:responseObject forAsk:ask];
+            [self localProcessForAsk:ask];
+        });
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        dispatch_async([self retrieveQueue], ^{
+            CDYIRLog(@"Error:%@", error);
+            [self setProcessedAsk:nil];
+            [self processNextAsk];
+        });
+    }];
+}
+
+- (void)cacheData:(NSData *)imageData forAsk:(CDYImageAsk *)ask {
+    NSString *cachePath = [self cachePathForAsk:ask withSize:NO];
+    [imageData writeToFile:cachePath atomically:YES];
+}
+
 - (NSString *)cachePathForAsk:(CDYImageAsk *)ask {
-    NSString *cacheKey = [self cacheKeyForAsk:ask];
+    return [self cachePathForAsk:ask withSize:YES];
+}
+
+- (NSString *)cachePathForAsk:(CDYImageAsk *)ask withSize:(BOOL)pathWithSize {
+    NSString *cacheKey = [self cacheKeyForAsk:ask withSize:pathWithSize];
     return  [self.cachePath stringByAppendingPathComponent:cacheKey];
 }
 
 - (NSString *)cacheKeyForAsk:(CDYImageAsk *)ask {
+    return [self cacheKeyForAsk:ask withSize:YES];
+}
+
+- (NSString *)cacheKeyForAsk:(CDYImageAsk *)ask withSize:(BOOL)keyWithSize {
     NSString *key = ask.imageURL.absoluteString;
-    key = [key stringByAppendingString:NSStringFromCGSize(ask.resultSize)];
+    if (keyWithSize) {
+        NSString *extension = [key pathExtension];
+        key = [key stringByAppendingString:NSStringFromCGSize(ask.resultSize)];
+        key = [key stringByAppendingPathExtension:extension];
+    }
     key = [key stringByReplacingOccurrencesOfString:@" " withString:@"_"];
     key = [key stringByReplacingOccurrencesOfString:@":" withString:@""];
     key = [key stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
