@@ -173,7 +173,8 @@
     NSString *key = ask.imageURL.absoluteString;
     if (keyWithSize) {
         NSString *extension = [key pathExtension];
-        key = [key stringByAppendingString:NSStringFromCGSize(ask.resultSize)];
+        key = [key stringByReplacingCharactersInRange:NSMakeRange(key.length - extension.length, extension.length) withString:@""];
+        key = [key stringByAppendingFormat:@"%dx%d", (int) ask.resultSize.width, (int) ask.resultSize.height];
         key = [key stringByAppendingPathExtension:extension];
     }
     key = [key stringByReplacingOccurrencesOfString:@" " withString:@"_"];
