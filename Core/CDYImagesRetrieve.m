@@ -15,6 +15,7 @@
  */
 
 #import <CDYImagesRetrieve/CDYImageAsk.h>
+#import <CommonCrypto/CommonDigest.h>
 #import "CDYImagesRetrieve.h"
 #import "CDYImagesRetrieveConstants.h"
 #import "AFHTTPRequestOperationManager.h"
@@ -120,7 +121,12 @@
 
     NSString *askDataPath = [self cachePathForAsk:ask];
     NSData *askData = UIImageJPEGRepresentation(atAskSize, 0.8);
-    [askData writeToFile:askDataPath atomically:YES];
+    NSError *writeError = nil;
+    [askData writeToFile:askDataPath options:NSDataWritingAtomic error:&writeError];
+    if (writeError) {
+        CDYIRLog(@"Write error:%@", writeError);
+        CDYIRLog(@"File name length:%d - %d", askDataPath.length, ((NSString *)[askDataPath.pathComponents lastObject]).length);
+    }
     ask.completion(ask, atAskSize);
     [self setProcessedAsk:nil];
     [self processNextAsk];
@@ -156,7 +162,11 @@
 
 - (void)cacheData:(NSData *)imageData forAsk:(CDYImageAsk *)ask {
     NSString *cachePath = [self cachePathForAsk:ask withSize:NO];
-    [imageData writeToFile:cachePath atomically:YES];
+    NSError *writeError = nil;
+    [imageData writeToFile:cachePath options:NSDataWritingAtomic error:&writeError];
+    if (writeError) {
+        CDYIRLog(@"Write error:%@", writeError);
+    }
 }
 
 - (NSString *)cachePathForAsk:(CDYImageAsk *)ask {
@@ -185,6 +195,15 @@
     key = [key stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
     key = [key stringByReplacingOccurrencesOfString:@"?" withString:@"_"];
     key = [key stringByReplacingOccurrencesOfString:@"=" withString:@"_"];
+    key = [key stringByReplacingOccurrencesOfString:@"*" withString:@"_"];
+
+    if (key.length > NAME_MAX) {
+        NSUInteger hashedLength = key.length - NAME_MAX + CC_MD5_DIGEST_LENGTH * 2;
+        NSUInteger chopOff = key.length - hashedLength;
+        NSString *hashed = [key substringFromIndex:chopOff];
+        key = [key substringToIndex:chopOff];
+        key = [key stringByAppendingString:[CDYImagesRetrieve cdyMd5HexDigest:hashed]];
+    }
 
     return key;
 }
@@ -195,6 +214,18 @@
     }
 
     return __retrieveQueue;
+}
+
++ (NSString*)cdyMd5HexDigest:(NSString*)input {
+    const char* str = [input UTF8String];
+    unsigned char result[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(str, strlen(str), result);
+
+    NSMutableString *ret = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+    for (int i = 0; i < CC_MD5_DIGEST_LENGTH; i++) {
+        [ret appendFormat:@"%02x", result[i]];
+    }
+    return ret;
 }
 
 @end
