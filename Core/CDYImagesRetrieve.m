@@ -43,6 +43,7 @@
         cachesPath = [cachesPath stringByAppendingPathComponent:@"images"];
         [[NSFileManager defaultManager] createDirectoryAtPath:cachesPath withIntermediateDirectories:YES attributes:nil error:nil];
         _cachePath = cachesPath;
+        _timeoutInterval = 20;
     }
 
     return self;
@@ -52,7 +53,7 @@
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"You must use [%@ %@] instead",
                                                                      NSStringFromClass([self class]),
-                                                                     NSStringFromSelector(@selector(sharedInstance))]
+                                                                     NSStringFromSelector(@selector(initWithName:))]
                                  userInfo:nil];
     return nil;
 }
@@ -135,6 +136,7 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager.operationQueue setMaxConcurrentOperationCount:1];
     [manager setResponseSerializer:[AFHTTPResponseSerializer serializer]];
+    [manager.requestSerializer setTimeoutInterval:self.timeoutInterval];
     CDYIRLog(@"Pull image from %@", ask.imageURL);
     [manager GET:ask.imageURL.absoluteString parameters:@"" success:^(AFHTTPRequestOperation *operation, id responseObject) {
         dispatch_async([self retrieveQueue], ^{

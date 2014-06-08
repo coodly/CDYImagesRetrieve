@@ -22,6 +22,8 @@ typedef void (^CDYImageRetrieveBlock)(CDYImageAsk *forAsk, UIImage *image);
 
 @interface CDYImagesRetrieve : NSObject
 
+@property (nonatomic, assign) NSTimeInterval timeoutInterval;
+
 - (id)initWithName:(NSString *)name;
 - (BOOL)hasImageForAsk:(CDYImageAsk *)ask;
 - (UIImage *)imageForAsk:(CDYImageAsk *)ask;
