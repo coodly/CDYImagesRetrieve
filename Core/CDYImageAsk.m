@@ -27,5 +27,22 @@
     return self;
 }
 
+- (BOOL)isEqual:(id)other {
+    if (other == self) {
+        return YES;
+    }
+    if (!other || ![[other class] isEqual:[self class]]) {
+        return NO;
+    }
+
+    CDYImageAsk *otherAsk = other;
+
+    if (![self.imageURL isEqual:otherAsk.imageURL]) {
+        return NO;
+    }
+
+    return CGSizeEqualToSize(self.resultSize, otherAsk.resultSize);
+}
+
 
 @end
