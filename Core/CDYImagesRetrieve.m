@@ -147,6 +147,7 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         dispatch_async([self retrieveQueue], ^{
             CDYIRLog(@"Error:%@", error);
+            ask.completion(ask, nil);
             [self setProcessedAsk:nil];
             [self processNextAsk];
         });
