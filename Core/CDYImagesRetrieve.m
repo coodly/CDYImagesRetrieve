@@ -184,12 +184,13 @@
 
 - (NSString *)cacheKeyForAsk:(CDYImageAsk *)ask withSize:(BOOL)keyWithSize {
     NSString *key = ask.imageURL.absoluteString;
-    if (keyWithSize) {
+    if (keyWithSize && !CGSizeEqualToSize(CGSizeZero, ask.resultSize)) {
         NSString *extension = [key pathExtension];
         key = [key stringByReplacingCharactersInRange:NSMakeRange(key.length - extension.length, extension.length) withString:@""];
         key = [key stringByAppendingFormat:@"%dx%d", (int) ask.resultSize.width, (int) ask.resultSize.height];
         key = [key stringByAppendingPathExtension:extension];
     }
+
     key = [key stringByReplacingOccurrencesOfString:@" " withString:@"_"];
     key = [key stringByReplacingOccurrencesOfString:@":" withString:@""];
     key = [key stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
