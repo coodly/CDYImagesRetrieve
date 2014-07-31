@@ -67,7 +67,7 @@
 - (UIImage *)imageForAsk:(CDYImageAsk *)ask {
     NSString *cachedFilePath = [self cachePathForAsk:ask];
     NSData *data = [NSData dataWithContentsOfFile:cachedFilePath];
-    return [[UIImage alloc] initWithData:data];
+    return [[UIImage alloc] initWithData:data scale:[UIScreen mainScreen].scale];
 }
 
 - (void)retrieveImageForAsk:(CDYImageAsk *)ask completion:(CDYImageRetrieveBlock)completion {
