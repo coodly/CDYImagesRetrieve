@@ -117,6 +117,14 @@
     NSString *originalDataPath = [self cachePathForAsk:ask withSize:NO];
     NSData *data = [NSData dataWithContentsOfFile:originalDataPath];
     UIImage *original = [[UIImage alloc] initWithData:data];
+
+    if (CGSizeEqualToSize(CGSizeZero, ask.resultSize)) {
+        ask.completion(ask, original);
+        [self setProcessedAsk:nil];
+        [self processNextAsk];
+        return;
+    }
+
     UIImage *atAskSize = [original scaleTo:ask.resultSize mode:ask.imageMode];
 
     NSString *askDataPath = [self cachePathForAsk:ask];
