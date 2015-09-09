@@ -152,7 +152,7 @@
     [manager setResponseSerializer:[AFHTTPResponseSerializer serializer]];
     [manager.requestSerializer setTimeoutInterval:self.timeoutInterval];
     CDYIRLog(@"Pull image from %@", ask.imageURL);
-    [manager GET:ask.imageURL.absoluteString parameters:@"" success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager GET:ask.imageURL.absoluteString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         dispatch_async([self retrieveQueue], ^{
             CDYIRLog(@"Success");
             [self cacheData:responseObject forAsk:ask];
