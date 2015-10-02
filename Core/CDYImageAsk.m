@@ -16,11 +16,18 @@
 
 #import "CDYImageAsk.h"
 
+@interface CDYImageAsk ()
+
+@property (nonatomic, strong) NSMutableArray *completionHandlers;
+
+@end
+
 @implementation CDYImageAsk
 
 - (id)init {
     self = [super init];
     if (self) {
+        _completionHandlers = [NSMutableArray array];
         [self setImageMode:UIViewContentModeScaleAspectFill];
         [self setResultSize:CGSizeZero];
     }
@@ -43,6 +50,10 @@
     }
 
     return CGSizeEqualToSize(self.resultSize, otherAsk.resultSize);
+}
+
+- (void)addCompletionHandler:(CDYImageRetrieveBlock)handler {
+    [self.completionHandlers addObject:handler];
 }
 
 

@@ -21,6 +21,12 @@
 #import "AFHTTPRequestOperationManager.h"
 #import "UIImage+CDYImageScale.h"
 
+@interface CDYImageAsk (Expose)
+
+@property (nonatomic, strong, readonly) NSMutableArray *completionHandlers;
+
+@end
+
 @interface CDYImagesRetrieve ()
 
 @property (nonatomic, copy) NSString *cachePath;
@@ -78,12 +84,13 @@
 
         if ([self.processedAsk isEqual:ask]) {
             CDYIRLog(@"Ask already processed");
+            [self.processedAsk addCompletionHandler:completion];
             return;
         }
 
         [self.asksQueue removeObject:ask];
         [self.asksQueue insertObject:ask atIndex:0];
-        [ask setCompletion:completion];
+        [ask addCompletionHandler:completion];
         [self processNextAsk];
     });
 }
@@ -119,7 +126,7 @@
     UIImage *original = [[UIImage alloc] initWithData:data];
 
     if (CGSizeEqualToSize(CGSizeZero, ask.resultSize)) {
-        ask.completion(ask, original);
+        [self notifyHandlersForAsk:ask withImage:original];
         [self setProcessedAsk:nil];
         [self processNextAsk];
         return;
@@ -135,7 +142,7 @@
         CDYIRLog(@"Write error:%@", writeError);
         CDYIRLog(@"File name length:%d - %d", askDataPath.length, ((NSString *)[askDataPath.pathComponents lastObject]).length);
     }
-    ask.completion(ask, atAskSize);
+    [self notifyHandlersForAsk:ask withImage:atAskSize];
     [self setProcessedAsk:nil];
     [self processNextAsk];
 }
@@ -161,11 +168,17 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         dispatch_async([self retrieveQueue], ^{
             CDYIRLog(@"Error:%@", error);
-            ask.completion(ask, nil);
+            [self notifyHandlersForAsk:ask withImage:nil];
             [self setProcessedAsk:nil];
             [self processNextAsk];
         });
     }];
+}
+
+- (void)notifyHandlersForAsk:(CDYImageAsk *)ask withImage:(UIImage *)image {
+    for (CDYImageRetrieveBlock handler in ask.completionHandlers) {
+        handler(ask, image);
+    }
 }
 
 - (void)cacheData:(NSData *)imageData forAsk:(CDYImageAsk *)ask {
